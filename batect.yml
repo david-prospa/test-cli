@@ -14,6 +14,9 @@ containers:
     volumes:
       - local: .
         container: /app
+      - type: cache
+        name: azure-cli-cache
+        container: /root/.azure
 
 tasks:
   run-cli:
@@ -24,6 +27,5 @@ tasks:
   run-local:
     run:
       container: local-cli
-      command: sh -c 'az login && az account list -o table'
-      environment:
-        AZURE_CONFIG_DIR: /tmp/.azure
+      entrypoint: /app/scripts/local-entrypoint.sh
+      command: az account list -o table
