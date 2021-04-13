@@ -6,6 +6,14 @@ jobs:
     displayName: Commit
     steps:
       - task: AzureCLI@2
+        displayName: Debug
+        inputs:
+          azureSubscription: "azure-data-engineering-sandbox-Data Engineering"
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: env | grep AZURE
+
+      - task: AzureCLI@2
         displayName: Run
         inputs:
           azureSubscription: "azure-data-engineering-sandbox-Data Engineering"
