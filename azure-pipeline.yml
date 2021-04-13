@@ -10,5 +10,5 @@ jobs:
         inputs:
           azureSubscription: "azure-data-engineering-sandbox-Data Engineering"
           scriptType: bash
-          scriptLocation: inline
+          scriptLocation: inlineScript
           inlineScript: ./batect run-cli
