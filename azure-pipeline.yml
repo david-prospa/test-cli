@@ -1,0 +1,14 @@
+pool:
+  vmImage: "ubuntu-20.04"
+
+jobs:
+  - job: Commit
+    displayName: Commit
+    steps:
+      - task: AzureCLI@2
+        displayName: Run
+        inputs:
+          azureSubscription: "azure-data-engineering-sandbox-Data Engineering"
+          scriptType: bash
+          scriptLocation: inline
+          inlineScript: ./batect run-cli
