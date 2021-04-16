@@ -10,13 +10,18 @@ jobs:
           repository: mcr.microsoft.com/azure-cli
           tag: "2.9.1"
 
+      - template: cache-docker-image-steps.yaml
+        parameters:
+          repository: apache/airflow
+          tag: "2.0.1-python3.8"
+
       - task: AzureCLI@2
         displayName: Debug
         inputs:
           azureSubscription: "azure-data-engineering-sandbox-Data Engineering"
           scriptType: bash
           scriptLocation: inlineScript
-          inlineScript: env | grep AZURE
+          inlineScript: ls -rla $(Pipeline.Workspace)/docker
 
       - task: AzureCLI@2
         displayName: Run
