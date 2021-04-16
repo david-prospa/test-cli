@@ -5,6 +5,11 @@ jobs:
   - job: Commit
     displayName: Commit
     steps:
+      - template: cache-docker-image-steps.yaml
+        parameters:
+          image: mcr.microsoft.com/azure-cli
+          tag: "2.9.1"
+
       - task: AzureCLI@2
         displayName: Debug
         inputs:
