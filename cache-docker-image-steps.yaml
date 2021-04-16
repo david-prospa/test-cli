@@ -7,7 +7,7 @@ parameters:
 steps:
   - task: Cache@2
     inputs:
-      key: 'docker | "$(Agent.OS)" | ${{ parameters.image }} | ${{ parameters.tag }}'
+      key: 'docker | "$(Agent.OS)" | "${{ parameters.image }}" | "${{ parameters.tag }}"'
       path: $(Pipeline.Workspace)/docker
       cacheHitVar: DOCKER_CACHE_RESTORED
     displayName: Caching ${{ parameters.image }} image
