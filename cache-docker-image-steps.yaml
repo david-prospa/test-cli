@@ -10,7 +10,7 @@ steps:
       key: 'docker | "$(Agent.OS)" | "${{ parameters.repository }}" | "${{ parameters.tag }}"'
       path: $(Pipeline.Workspace)/docker
       cacheHitVar: DOCKER_CACHE_RESTORED
-    displayName: Caching ${{ parameters.repository }}:${{ parameters.tag }} repository
+    displayName: Restore ${{ parameters.repository }}:${{ parameters.tag }} tar
 
   - bash: |
       docker load < $(Pipeline.Workspace)/docker/${{ parameters.repository }}/${{ parameters.tag }}.tar
