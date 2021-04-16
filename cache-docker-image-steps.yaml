@@ -1,5 +1,5 @@
 parameters:
-  - name: image
+  - name: repository
     type: string
   - name: tag
     type: string
@@ -7,17 +7,19 @@ parameters:
 steps:
   - task: Cache@2
     inputs:
-      key: 'docker | "$(Agent.OS)" | "${{ parameters.image }}" | "${{ parameters.tag }}"'
+      key: 'docker | "$(Agent.OS)" | "${{ parameters.repository }}" | "${{ parameters.tag }}"'
       path: $(Pipeline.Workspace)/docker
       cacheHitVar: DOCKER_CACHE_RESTORED
-    displayName: Caching ${{ parameters.image }} image
+    displayName: Caching ${{ parameters.repository }}:${{ parameters.tag }} repository
 
-  - script: |
-      docker load < $(Pipeline.Workspace)/docker/${{ parameters.image }}/${{ parameters.tag }}.tar
+  - bash: |
+      docker load < $(Pipeline.Workspace)/docker/${{ parameters.repository }}/${{ parameters.tag }}.tar
+    displayName: Load image ${{ parameters.repository }}:${{ parameters.tag }} from tar
     condition: and(not(canceled()), eq(variables.DOCKER_CACHE_RESTORED, 'true'))
 
-  - script: |
-      mkdir -p $(Pipeline.Workspace)/docker/${{ parameters.image }}
-      docker pull ${{ parameters.image }}:${{ parameters.tag }}
-      docker save ${{ parameters.image }}:${{ parameters.tag }} > $(Pipeline.Workspace)/docker/${{ parameters.image }}/${{ parameters.tag }}.tar
+  - bash: |
+      mkdir -p $(Pipeline.Workspace)/docker/${{ parameters.repository }}
+      docker pull ${{ parameters.repository }}:${{ parameters.tag }}
+      docker save ${{ parameters.repository }}:${{ parameters.tag }} > $(Pipeline.Workspace)/docker/${{ parameters.repository }}/${{ parameters.tag }}.tar
+    displayName: Pull and save image ${{ parameters.repository }}:${{ parameters.tag }} to tar
     condition: and(not(canceled()), or(failed(), ne(variables.DOCKER_CACHE_RESTORED, 'true')))
